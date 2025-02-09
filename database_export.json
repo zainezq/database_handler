@@ -1,0 +1,30 @@
+{
+    "personal_info": [
+        {
+            "id": 1,
+            "name": "Zaine",
+            "age": 20,
+            "bio": "Final year Computer Science Student"
+        }
+    ],
+    "projects": [
+        {
+            "id": 1,
+            "title": "database_handler.py",
+            "description": "handles database insertion and update through the cli, connects to a psql database",
+            "technologies": [
+                "python",
+                "psql"
+            ]
+        }
+    ],
+    "daily_logs": [
+        {
+            "id": 1,
+            "date": "2025-02-09T20:34:30.090344",
+            "entry": "Working on the database handler"
+        }
+    ],
+    "bookmarks": [],
+    "tasks": []
+}
