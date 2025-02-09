@@ -6,6 +6,8 @@ from dotenv import load_dotenv
 from datetime import datetime
 import colorama
 from colorama import Fore, Style
+import orgparse
+from orgparse import load, loads
 
 colorama.init(autoreset=True)
 
@@ -30,7 +32,8 @@ def print_main_menu():
     print(Fore.MAGENTA + " [3] " + Fore.WHITE + "✏️  Edit Personal Info")
     print(Fore.CYAN + " [4] " + Fore.WHITE + "🔍 Search Data")
     print(Fore.YELLOW + " [5] " + Fore.WHITE + "📂 Export Data to JSON")
-    print(Fore.RED + " [6] " + Fore.WHITE + "🚪 Exit")
+    print(Fore.GREEN + " [6] " + Fore.WHITE + "📤 Add Tasks from .org file")
+    print(Fore.RED + " [7] " + Fore.WHITE + "🚪 Exit")
     print(Fore.CYAN + "=" * 40)
 
 
@@ -238,6 +241,58 @@ def search_data():
     conn.close()
 
 
+# Function to recursively add tasks and subtasks from Org file to the database
+def add_tasks_from_org():
+    file_path = r"Z:\master-folder\org_files\todo.org"
+    org_file = load(file_path)  # Load the org file
+
+    # Create the "tasks" table if it doesn't exist
+    conn = connect_db()
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS tasks (
+            id SERIAL PRIMARY KEY,
+            title TEXT NOT NULL,
+            description TEXT,
+            status TEXT CHECK (status IN ('TODO', 'DONE')) DEFAULT 'TODO',
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            parent_id INTEGER REFERENCES tasks(id) ON DELETE CASCADE
+        )
+    """)
+    conn.commit()
+
+    # Function to insert task into the database
+    def insert_task(node, parent_id=None):
+        # Check if it's a task with status (has todo attribute)
+        if node.todo is not None:
+            title = node.heading.strip()
+            description = node.body.strip() if node.body else ""
+            status = "TODO" if node.todo is None else node.todo.upper()
+
+            # Insert the task into the database
+            cur.execute("""
+                INSERT INTO tasks (title, description, status, parent_id)
+                VALUES (%s, %s, %s, %s) RETURNING id
+            """, (title, description, status, parent_id))
+            task_id = cur.fetchone()[0]
+
+            # Commit the insert
+            conn.commit()
+
+            # Insert subtasks (children) as separate tasks
+            for child in node.children:
+                print(node.children)
+                insert_task(child, parent_id=task_id)  # Recursively insert subtasks with parent_id
+
+    # Insert all tasks starting from the root nodes (top-level tasks)
+    for node in org_file.children:  # Iterate through children of the root node
+        insert_task(node)
+
+    cur.close()
+    conn.close()
+    print("✅ Tasks and subtasks successfully added to the database!")
+
+
 # CLI Menu
 def main():
     while True:
@@ -281,6 +336,8 @@ def main():
         elif choice == "5":
             export_data()
         elif choice == "6":
+            add_tasks_from_org()
+        elif choice == "7":
             print(Fore.RED + "\n👋 Goodbye, see you next time!\n")
             break
         else:
