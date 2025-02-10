@@ -8,8 +8,9 @@ import colorama
 from colorama import Fore, Style
 import orgparse
 from orgparse import load, loads
-
+import re
 colorama.init(autoreset=True)
+from org_parser import parse_org_subtasks, extract_clean_description_and_subtree
 
 load_dotenv()
 # Database connection settings
@@ -243,7 +244,7 @@ def search_data():
 
 # Function to recursively add tasks and subtasks from Org file to the database
 def add_tasks_from_org():
-    file_path = r"Z:\master-folder\org_files\todo.org"
+    file_path = r"/home/zaine/master-folder/org_files/todo.org"
     org_file = load(file_path)  # Load the org file
 
     # Create the "tasks" table if it doesn't exist
@@ -261,13 +262,21 @@ def add_tasks_from_org():
     """)
     conn.commit()
 
-    # Function to insert task into the database
     def insert_task(node, parent_id=None):
-        # Check if it's a task with status (has todo attribute)
+        """Recursively inserts a task into the database, ensuring all levels of nesting are handled."""
         if node.todo is not None:
             title = node.heading.strip()
-            description = node.body.strip() if node.body else ""
-            status = "TODO" if node.todo is None else node.todo.upper()
+
+            # Extract a clean description and the remaining subtree (excluding description)
+            description, subtree = extract_clean_description_and_subtree(node.body)
+
+            # Debugging output
+            print(f"Task: {title}")
+            print(f"Raw Body:\n{node.body}")
+            print(f"Extracted Clean Description: {description}")
+            print(f"Remaining Subtree:\n{subtree}\n")
+
+            status = node.todo.upper() if node.todo else "TODO"
 
             # Insert the task into the database
             cur.execute("""
@@ -279,13 +288,13 @@ def add_tasks_from_org():
             # Commit the insert
             conn.commit()
 
-            # Insert subtasks (children) as separate tasks
-            for child in node.children:
-                print(node.children)
-                insert_task(child, parent_id=task_id)  # Recursively insert subtasks with parent_id
+            # If there is a subtree, process it recursively
+            if subtree:
+                subtree_nodes = parse_org_subtasks(subtree)  # Convert subtree into structured nodes
+                for child in subtree_nodes:
+                    insert_task(child, parent_id=task_id)  # Recursively insert subtasks with parent_id
 
-    # Insert all tasks starting from the root nodes (top-level tasks)
-    for node in org_file.children:  # Iterate through children of the root node
+    for node in org_file.children:
         insert_task(node)
 
     cur.close()
@@ -301,7 +310,7 @@ def main():
 
         choice = input(Fore.YELLOW + "💾 Choose an option: " + Style.BRIGHT)
 
-        if choice == "1":  # Add Data Submenu
+        if choice == "1":
             while True:
                 clear_terminal()
                 print_banner()

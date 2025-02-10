@@ -30,26 +30,170 @@
         {
             "id": 1,
             "title": "Task 1",
-            "description": "Some description of task 1.\n  ** TODO Subtask 1.1\n     Subtask description.\n  ** DONE Subtask 1.2\n     Another subtask description.",
+            "description": "This is a simple task with a description.",
             "status": "TODO",
-            "created_at": "2025-02-09T22:59:48.968885",
+            "created_at": "2025-02-10T00:46:23.727022",
             "parent_id": null
         },
         {
             "id": 2,
             "title": "Task 2",
-            "description": "Some description of task 2.",
-            "status": "DONE",
-            "created_at": "2025-02-09T22:59:48.990573",
+            "description": "This task has a description and subtasks.",
+            "status": "TODO",
+            "created_at": "2025-02-10T00:46:23.742824",
             "parent_id": null
         },
         {
             "id": 3,
-            "title": "Task 3",
+            "title": "Subtask 2.1",
+            "description": "This is the first subtask.",
+            "status": "TODO",
+            "created_at": "2025-02-10T00:46:23.755888",
+            "parent_id": 2
+        },
+        {
+            "id": 4,
+            "title": "Subtask 2.2",
             "description": "",
             "status": "TODO",
-            "created_at": "2025-02-09T22:59:49.014023",
+            "created_at": "2025-02-10T00:46:23.777703",
+            "parent_id": 2
+        },
+        {
+            "id": 5,
+            "title": "Task 3",
+            "description": "This task is completed but still has a description.",
+            "status": "DONE",
+            "created_at": "2025-02-10T00:46:23.800264",
             "parent_id": null
+        },
+        {
+            "id": 6,
+            "title": "Task 4",
+            "description": "",
+            "status": "TODO",
+            "created_at": "2025-02-10T00:46:23.815933",
+            "parent_id": null
+        },
+        {
+            "id": 7,
+            "title": "Subtask 4.1",
+            "description": "This subtask has a description.",
+            "status": "TODO",
+            "created_at": "2025-02-10T00:46:23.827807",
+            "parent_id": 6
+        },
+        {
+            "id": 8,
+            "title": "Subtask 4.2",
+            "description": "",
+            "status": "TODO",
+            "created_at": "2025-02-10T00:46:23.843699",
+            "parent_id": 6
+        },
+        {
+            "id": 9,
+            "title": "Subtask 4.3",
+            "description": "",
+            "status": "TODO",
+            "created_at": "2025-02-10T00:46:23.863001",
+            "parent_id": 6
+        },
+        {
+            "id": 10,
+            "title": "Task 5",
+            "description": "",
+            "status": "TODO",
+            "created_at": "2025-02-10T00:46:23.880061",
+            "parent_id": null
+        },
+        {
+            "id": 11,
+            "title": "Subtask 5.1",
+            "description": "A completed subtask.",
+            "status": "DONE",
+            "created_at": "2025-02-10T00:46:23.892851",
+            "parent_id": 10
+        },
+        {
+            "id": 12,
+            "title": "Subtask 5.2",
+            "description": "",
+            "status": "TODO",
+            "created_at": "2025-02-10T00:46:23.911729",
+            "parent_id": 10
+        },
+        {
+            "id": 13,
+            "title": "Subtask 5.3",
+            "description": "",
+            "status": "TODO",
+            "created_at": "2025-02-10T00:46:23.937620",
+            "parent_id": 10
+        },
+        {
+            "id": 14,
+            "title": "Task 6",
+            "description": "This task has multiple paragraphs.\n\nHere is the second paragraph.",
+            "status": "TODO",
+            "created_at": "2025-02-10T00:46:23.953688",
+            "parent_id": null
+        },
+        {
+            "id": 15,
+            "title": "Task 7",
+            "description": "No description, only subtasks.",
+            "status": "TODO",
+            "created_at": "2025-02-10T00:46:23.968309",
+            "parent_id": null
+        },
+        {
+            "id": 16,
+            "title": "Subtask 7.1",
+            "description": "",
+            "status": "TODO",
+            "created_at": "2025-02-10T00:46:23.991012",
+            "parent_id": 15
+        },
+        {
+            "id": 17,
+            "title": "Subtask 7.2",
+            "description": "",
+            "status": "TODO",
+            "created_at": "2025-02-10T00:46:24.006339",
+            "parent_id": 15
+        },
+        {
+            "id": 18,
+            "title": "Task 8",
+            "description": "",
+            "status": "TODO",
+            "created_at": "2025-02-10T00:46:24.020517",
+            "parent_id": null
+        },
+        {
+            "id": 19,
+            "title": "Subtask 8.1",
+            "description": "This task has:\n- Bullet points\n- More bullet points",
+            "status": "TODO",
+            "created_at": "2025-02-10T00:46:24.033920",
+            "parent_id": 18
+        },
+        {
+            "id": 20,
+            "title": "Task 9",
+            "description": "",
+            "status": "TODO",
+            "created_at": "2025-02-10T00:46:24.050326",
+            "parent_id": null
+        },
+        {
+            "id": 21,
+            "title": "Subtask 9.1",
+            "description": "",
+            "status": "TODO",
+            "created_at": "2025-02-10T00:46:24.064541",
+            "parent_id": 20
         }
     ]
 }
