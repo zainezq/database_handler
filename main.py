@@ -6,9 +6,7 @@ from dotenv import load_dotenv
 from datetime import datetime
 import colorama
 from colorama import Fore, Style
-import orgparse
-from orgparse import load, loads
-import re
+from orgparse import load
 colorama.init(autoreset=True)
 from org_parser import parse_org_subtasks, extract_clean_description_and_subtree
 
@@ -159,6 +157,7 @@ def view_data(table):
 
 # Edit personal info by ID
 def edit_personal_info():
+    clear_terminal()
     view_data("personal_info")
     edit_id = input("Enter the ID of the record to edit: ")
     new_name = input("Enter the new name: ")
@@ -213,7 +212,7 @@ def export_data():
     # Write to JSON file
     with open("database_export.json", "w") as json_file:
         json.dump(all_data, json_file, indent=4)
-
+    clear_terminal()
     print("✅ All tables exported successfully to database_export.json!")
 
 
