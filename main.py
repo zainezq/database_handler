@@ -70,6 +70,9 @@ def insert_personal_info():
 
     conn = connect_db()
     cur = conn.cursor()
+
+    cur.execute("CREATE TABLE IF NOT EXISTS personal_info (id SERIAL PRIMARY KEY, name TEXT NOT NULL, age INT, bio TEXT)")
+    conn.commit()
     cur.execute("INSERT INTO personal_info (name, age, bio) VALUES (%s, %s, %s)", (name, age, bio))
     conn.commit()
     cur.close()
@@ -85,6 +88,8 @@ def insert_project():
 
     conn = connect_db()
     cur = conn.cursor()
+    cur.execute("CREATE TABLE IF NOT EXISTS projects (id SERIAL PRIMARY KEY, title TEXT NOT NULL, description TEXT, technologies TEXT[])")
+    conn.commit()
     cur.execute("INSERT INTO projects (title, description, technologies) VALUES (%s, %s, %s)",
                 (title, description, technologies))
     conn.commit()
@@ -99,6 +104,8 @@ def insert_daily_log():
 
     conn = connect_db()
     cur = conn.cursor()
+    cur.execute("CREATE TABLE IF NOT EXISTS daily_logs (id SERIAL PRIMARY KEY, date TIMESTAMP DEFAULT CURRENT_TIMESTAMP , entry TEXT NOT NULL)")
+    conn.commit()
     cur.execute("INSERT INTO daily_logs (entry) VALUES (%s)", (entry,))
     conn.commit()
     cur.close()
@@ -114,6 +121,8 @@ def insert_bookmark():
 
     conn = connect_db()
     cur = conn.cursor()
+    cur.execute("CREATE TABLE IF NOT EXISTS bookmarks (id SERIAL PRIMARY KEY, title TEXT NOT NULL, url TEXT NOT NULL, tags TEXT[])")
+    conn.commit()
     cur.execute("INSERT INTO bookmarks (title, url, tags) VALUES (%s, %s, %s)", (title, url, tags))
     conn.commit()
     cur.close()
@@ -129,6 +138,14 @@ def insert_task():
 
     conn = connect_db()
     cur = conn.cursor()
+    cur.execute("""CREATE TABLE IF NOT EXISTS tasks (
+                id SERIAL PRIMARY KEY,
+                title TEXT NOT NULL,
+                description TEXT,
+                status TEXT CHECK (status IN ('TODO', 'DONE')) DEFAULT 'TODO',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)""")
+
+    conn.commit()
     cur.execute("INSERT INTO tasks (task_name, due_date, status) VALUES (%s, %s, %s)",
                 (task_name, due_date or None, status))
     conn.commit()
